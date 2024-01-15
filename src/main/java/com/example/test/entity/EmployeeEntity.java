@@ -1,6 +1,9 @@
 package com.example.test.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 @Entity
@@ -11,15 +14,30 @@ public class EmployeeEntity {
     @Column(name = "emp_id")
     private Long id;
 
+    @NotBlank(message = "Name can not be blank")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 symbols")
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Name must contains only english letters")
     @Column(name = "name")
     private String name;
 
+    @NotBlank(message = "Gender can not be blank")
+    @Pattern(regexp = "^(Male|Female)$", message = "Gender must be 'Male' or 'Female'")
     @Column(name = "gender")
     private String gender;
 
+    @NotNull(message = "Date of birth cannot be null")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Pattern(
+            regexp = "^\\d{4}-\\d{2}-\\d{2}$",
+            message = "Date of birth must be in the past and should be in the format 'yyyy-MM-dd'"
+    )
+    @Past(message = "Date of birth must be in the past")
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @NotBlank(message = "Gender can not be blank")
+    @Pattern(regexp = "^[a-zA-Z]+,\\s*[a-zA-Z]+,\\s*[a-zA-Z]+$",
+            message = "Address must be in format 'City, Region, Country' with English letters only")
     @Column(name = "address")
     private String address;
 
